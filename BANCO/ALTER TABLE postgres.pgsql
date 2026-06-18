@@ -1,0 +1,2 @@
+ALTER TABLE postgres
+ALTER COLUMN descricao DROP NOT NULL;

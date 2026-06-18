@@ -1,0 +1,1 @@
+ALTER TABLE velas DROP COLUMN descricao

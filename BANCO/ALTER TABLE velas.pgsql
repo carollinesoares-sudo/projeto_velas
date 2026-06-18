@@ -1,0 +1,2 @@
+ALTER TABLE velas
+ALTER COLUMN descricao DROP NOT NULL;

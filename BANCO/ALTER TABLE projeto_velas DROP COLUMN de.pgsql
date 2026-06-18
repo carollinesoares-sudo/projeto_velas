@@ -1,0 +1,1 @@
+ALTER TABLE projeto_velas DROP COLUMN descricao
