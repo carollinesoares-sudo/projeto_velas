@@ -40,11 +40,11 @@ try {
     <style>
        
         :root {
-            --bg-canvas: #f4f0ea;    /* Tom areia clássico */
-            --bg-card: #fdfbfa;      /* Fundo do card interno */
-            --text-dark: #1a1512;    /* Marrom escuro quase preto */
-            --text-muted: #6e655f;   /* Tom terroso sutil */
-            --accent-green: #3d5245; /* Verde botânico do Figma */
+            --bg-canvas: #f4f0ea;
+            --bg-card: #fdfbfa;
+            --text-dark: #1a1512;
+            --text-muted: #6e655f;
+            --accent-green: #3d5245;
             --line-color: rgba(26, 21, 18, 0.12);
         }
 

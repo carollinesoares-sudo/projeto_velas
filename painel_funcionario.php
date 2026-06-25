@@ -14,11 +14,11 @@ $total_velas = 0;
 
 try {
     if (isset($pdo)) {
-       
+        // busca todas as velas
         $stmt = $pdo->query("SELECT * FROM public.velas ORDER BY id DESC");
         $velas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        
+        // total de estoque
         $stmt_count = $pdo->query("SELECT SUM(estoque) FROM public.velas");
         $total_velas = (int)$stmt_count->fetchColumn();
     }

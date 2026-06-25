@@ -7,40 +7,32 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Inclui a conexão com o banco de dados
-// Substitua 'conexao.php' pelo nome real do seu arquivo de conexão, se for diferente
 require_once 'conexao.php'; 
 
 $mensagem_sucesso = "";
 $mensagem_erro = "";
 
-//  Verifica se o formulário foi enviado via POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Coleta e limpa os dados enviados para evitar espaços em branco extras
+    // recebe e limpa os dados
     $nome = trim($_POST['nome'] ?? '');
     $email = trim($_POST['email'] ?? '');
     $mensagem = trim($_POST['mensagem'] ?? '');
 
-    // Validação básica se os campos não estão vazios
     if (!empty($nome) && !empty($email) && !empty($mensagem)) {
         try {
-            // Query preparada para evitar ataques de SQL Injection
+            // salva no banco
             $sql = "INSERT INTO contatos (nome, email, mensagem, data_envio) VALUES (:nome, :email, :mensagem, NOW())";
             $stmt = $pdo->prepare($sql);
             
-            // Vincula os valores de forma segura
             $stmt->bindParam(':nome', $nome);
             $stmt->bindParam(':email', $email);
             $stmt->bindParam(':mensagem', $mensagem);
             
-            // Executa a inserção no banco de dados
             $stmt->execute();
             
             $mensagem_sucesso = "Sua mensagem foi enviada para a Maia Candle Co.! Entraremos em contato em breve. 🌿";
         } catch (PDOException $e) {
-            // Caso ocorra algum erro no banco (ex: tabela não existe)
             $mensagem_erro = "Ops! Ocorreu um erro ao salvar sua mensagem. Tente novamente mais tarde.";
-            // Nota: Em produção, mude para logar o erro em vez de exibir: error_log($e->getMessage());
         }
     } else {
         $mensagem_erro = "Por favor, preencha todos os campos do formulário.";

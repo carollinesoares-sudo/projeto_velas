@@ -1,72 +1,57 @@
 <?php
 
-
-// Ativa a exibição de erros para facilitar o debug em ambiente de desenvolvimento
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Garante que a sessão do usuário está ativa para que possamos manipular os itens salvos
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Inicializa a estrutura de dados do carrinho na sessão como um array vazio, caso não exista
 if (!isset($_SESSION['carrinho'])) {
     $_SESSION['carrinho'] = [];
 }
 
-// Inclui o arquivo de conexão PDO com o banco de dados
 include_once 'conexao.php';
 
-// --- MÁQUINA DE ESTADOS DO CARRINHO (PROCESSAMENTO POST) ---
-// Centraliza todas as ações de mutação do carrinho nesta seção antes de renderizar o HTML
+// processa as ações do carrinho
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['acao'])) {
     $acao = $_POST['acao'];
     $produto_id = isset($_POST['produto_id']) ? intval($_POST['produto_id']) : 0;
 
-    // Só processa se houver um ID numérico válido
     if ($produto_id > 0) {
-        
-        // AÇÃO 1: ADICIONAR ITEM OU INCREMENTAR QUANTIDADE
         if ($acao === 'adicionar') {
             $qtd_adicionar = isset($_POST['quantidade']) ? intval($_POST['quantidade']) : 1;
-            if ($qtd_adicionar < 1) { $qtd_adicionar = 1; } // Garante o piso mínimo de 1 item
+            if ($qtd_adicionar < 1) { $qtd_adicionar = 1; }
 
-            // Se o produto já está no carrinho, incrementa a quantidade; senão, cria a chave
             if (isset($_SESSION['carrinho'][$produto_id])) {
                 $_SESSION['carrinho'][$produto_id] += $qtd_adicionar;
             } else {
                 $_SESSION['carrinho'][$produto_id] = $qtd_adicionar;
             }
             
-        // AÇÃO 2: REMOVER ITEM COMPLETAMENTE
         } elseif ($acao === 'remover') {
-            unset($_SESSION['carrinho'][$produto_id]); // Desaloca a chave correspondente do array
+            unset($_SESSION['carrinho'][$produto_id]);
             
-        // AÇÃO 3: ATUALIZAR QUANTIDADE DIRETAMENTE PELO INPUT
         } elseif ($acao === 'atualizar') {
             $nova_qtd = isset($_POST['quantidade']) ? intval($_POST['quantidade']) : 1;
             if ($nova_qtd > 0) {
                 $_SESSION['carrinho'][$produto_id] = $nova_qtd;
             } else {
-                unset($_SESSION['carrinho'][$produto_id]); // Se a quantidade for zero ou menor, remove do carrinho
+                unset($_SESSION['carrinho'][$produto_id]);
             }
         }
     }
-    // Padrão Post-Redirect-Get: Redireciona para a mesma página via GET para limpar o payload do POST.
-    // Isso evita que o usuário reenvie o formulário e duplique a ação ao atualizar a página (F5).
+    // redireciona pra limpar o post
     header('Location: carrinho.php');
     exit;
 }
 
-// --- PREPARAÇÃO DOS DADOS PARA EXIBIÇÃO ---
+// prepara os dados pro display
 $produtos_no_carrinho = [];
 $total_carrinho = 0;
 
-// Se o carrinho possuir itens guardados na sessão, inicia a montagem do extrato
 if (!empty($_SESSION['carrinho'])) {
-
-    // Mock/Array Estático de Kits: Produtos especiais que não estão na tabela principal de velas
+    // kits especiais
     $kits_estaticos = [
         901 => ['nome' => 'Kit Trio Clássico', 'tamanho' => '3x Velas 150g', 'preco' => 135.00, 'imagem' => 'kit3.png'],
         902 => ['nome' => 'Kit Dueto Relaxante', 'tamanho' => '2x Velas 200g', 'preco' => 98.00, 'imagem' => 'kit2.png'], 
@@ -75,7 +60,6 @@ if (!empty($_SESSION['carrinho'])) {
 
     $ids_banco = [];
     
-    // Separa os itens: o que for kit processa localmente; o que for vela comum joga na fila do banco de dados
     foreach (array_keys($_SESSION['carrinho']) as $id_item) {
         if (!isset($kits_estaticos[$id_item])) {
             $ids_banco[] = $id_item; // Guarda o ID para a query SQL posterior

@@ -9,7 +9,7 @@ O sistema foi projetado para oferecer uma experiência moderna, intuitiva e efic
 Por meio das operações de CRUD e de funcionalidades complementares de consulta e controle, o sistema proporciona maior produtividade e confiabilidade na administração da loja.
 
 # Objetivo do Projeto 
-O objetivo desse projeto é desenvolver um sistema web utilizando PHP e MySQL, com foco no gerenciamento de produtos(velas aromáticas), permitindo:
+O objetivo desse projeto é desenvolver um sistema web utilizando PHP e PostgreSQL, com foco no gerenciamento de produtos(velas aromáticas), permitindo:
 -Cadastro completo de velas aromáticas;
 -Consulta detalhada dos produtos cadastrados;
 -Atualização de informações dos produtos;
@@ -74,7 +74,7 @@ RF15: O sistema deve solicitar confirmação antes da exclusão de um registro.
 # Requisitos não Funcionais
 
 RNF01: O sistema deve ser desenvolvido utilizando PHP.
-RNF02: O banco de dados utilizado deve ser MySQL.
+RNF02: O banco de dados utilizado deve ser PostgreSQL.
 RNF03: A interface deve possuir design moderno e intuitivo.
 RNF04: O sistema deve utilizar HTML5 e CSS3.
 RNF05: O código deve ser organizado em módulos e arquivos separados.
@@ -153,10 +153,10 @@ Cadastrar Vela
 
 # Tecnologias utilizadas 
 - PHP
--mYSQL
--html
--css
--Vscode
+- PostgreSQL
+- HTML
+- CSS
+- JavaScript
 
 # Senha para acessar login funcionario
 email: admin@maiacandle.com.br
@@ -165,38 +165,54 @@ senha: admin123
 # Para acessar o SITE
 http://localhost:8000/portal.php
 
-# Estrtura do Projeto
-maiacandle/ 
-├── css/ │ 
-└── estilo.css │
- ├── conexao.php │
-  ├── index.php │ 
-  ├── cadastrar.php │ 
-  ├── salvar.php │
-   ├── visualizar.php │
-    ├── editar.php │ 
-    ├── atualizar.php │
-     ├── excluir.php │
-      ├── pesquisar.php │
-       ├── componentes/ │
-        ├── header.php │
-         └── footer.php │
-          ├── banco/ │
-           └── dump.sql │
-            └── README.md
+# Estrutura do Projeto
+```
+projeto_velas/
+├── css/
+│   └── estilo.css
+├── imagens/
+├── BANCO/
+│   └── dump.sql
+├── conexao.php
+├── index.php
+├── portal.php
+├── cadastrar.php
+├── cadastrar_vela.php
+├── salvar.php
+├── visualizar.php
+├── editar.php
+├── editar_vela.php
+├── atualizar.php
+├── excluir.php
+├── produtos.php
+├── kits.php
+├── carrinho.php
+├── checkout.php
+├── pedidos.php
+├── login.php
+├── login_funcionario.php
+├── painel_funcionario.php
+├── dashboard.php
+├── logout.php
+├── contato.php
+├── sobre.php
+└── README.md
+```
 
-# Como acessar o BANCOMYSQL do projeto
-Passo 1: Inicialização do Banco de Dados
-A aplicação utiliza o banco de dados MySQL para a persistência dos dados. Certifique-se de que o serviço do MySQL está ativo no seu servidor local (operando por padrão na porta 3306) e execute o script contido em banco/dump.sql através do seu gerenciador (como phpMyAdmin, Workbench ou CLI) para provisionar a base de dados maiacandle_db.
+# Como acessar o Banco de Dados PostgreSQL do Projeto
 
-Passo 2: Parametrização do Arquivo de Conexão
-Abra o arquivo conexao.php localizado na raiz do projeto e certifique-se de que as credenciais apontam para o seu ambiente local do MySQL. O arquivo deve seguir a estrutura homologada abaixo:
+## Passo 1: Inicialização do Banco de Dados
+A aplicação utiliza o banco de dados PostgreSQL para a persistência dos dados. Certifique-se de que o serviço do PostgreSQL está ativo no seu servidor local (operando por padrão na porta 5432) e execute o script contido em BANCO/dump.sql através do seu gerenciador (como pgAdmin, DBeaver ou CLI) para provisionar a base de dados projeto_velas.
 
-PHP
+## Passo 2: Parametrização do Arquivo de Conexão
+Abra o arquivo conexao.php localizado na raiz do projeto e certifique-se de que as credenciais apontam para o seu ambiente local do PostgreSQL. O arquivo deve seguir a estrutura abaixo:
+
+```php
 $host    = 'localhost';
 $dbname  = 'projeto_velas';
-$user    = 'postgres';          
-$password = 'POSTGRES';   
+$user    = 'postgres';
+$password = 'POSTGRES';
+```   
 
 # Como acessar meu site na WEB
 Passo 3: Inicialização do Servidor na Porta 8000

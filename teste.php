@@ -1,7 +1,7 @@
 <?php
 
-error_reporting(E_ALL);// Ativa a exibição de todos os erros
-ini_set('display_errors', 1);// Garante que os erros sejam mostrados no navegador
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">

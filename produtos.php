@@ -34,12 +34,12 @@ try {
     <style>
         
         :root {
-            --bg-canvas: #f4f0ea;    /* Tom areia clássico */
-            --bg-card: #fdfbfa;      /* Fundo puro das imagens e blocos */
-            --text-dark: #1a1512;    /* Marrom escuro botânico */
-            --text-muted: #6e655f;   /* Legendagem terrosa */
-            --accent-green: #3d5245; /* Verde assinatura Maia Candle */
-            --accent-gold: #764a34;  /* Tom bronze/terracota */
+            --bg-canvas: #f4f0ea;
+            --bg-card: #fdfbfa;
+            --text-dark: #1a1512;
+            --text-muted: #6e655f;
+            --accent-green: #3d5245;
+            --accent-gold: #764a34;
             --line-color: rgba(26, 21, 18, 0.12);
         }
 

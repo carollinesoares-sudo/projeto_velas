@@ -1,40 +1,26 @@
 <?php
 
-
-// Força o PHP a exibir todos os erros em tempo de execução (essencial no desenvolvimento)
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Inicializa o barramento de sessões se nenhuma sessão estiver aberta no navegador
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Inicializa a variável de resposta para evitar erros de variável indefinida no HTML
 $mensagem = "";
 
-// Detecta se a requisição atual é um disparo de formulário (MÉTODO POST)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
-    // Captura os dados digitados utilizando o operador de coalescência nula (??)
-    // Isso evita avisos de "Notice: Undefined index" caso os campos fossem submetidos nulos
     $email = $_POST['email'] ?? '';
     $senha = $_POST['senha'] ?? '';
 
-    // Validação básica de retaguarda: garante que e-mail e senha possuem conteúdo real
     if (!empty($email) && !empty($senha)) {
-        
-        // PERSISTÊNCIA EM SESSÃO: Salva temporariamente os dados na memória do servidor.
-        // Isso permite que a página 'login.php' valide o acesso comparando com esses mesmos valores.
+        // salva na sessão
         $_SESSION['cadastro_email'] = $email;
         $_SESSION['cadastro_senha'] = $senha;
         $_SESSION['cadastro_nome'] = $_POST['nome'] ?? 'Cliente';
 
-        // Define a mensagem de feedback que será injetada e exibida no card
         $mensagem = "Conta criada com sucesso! Redirecionando para o login... 🕯️";
         
-        // Injeção de script nativo para criar um delay sutil de 2 segundos (2000ms)
-        // Dando tempo para o usuário ler a mensagem de sucesso antes do redirecionamento de tela
         echo "<script>setTimeout(function(){ window.location.href = 'login.php'; }, 2000);</script>";
     }
 }

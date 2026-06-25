@@ -1,61 +1,48 @@
 <?php
 
-
-// Configura o PHP para reportar todos os tipos de erros (Essencial em ambiente de desenvolvimento)
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Inicializa a sessão de forma segura se ela ainda não estiver ativa no servidor
 if (session_status() === PHP_SESSION_NONE) { 
     session_start(); 
 }
 
-// Verifica a existência do arquivo de conexão antes de incluí-lo para evitar Fatal Errors catastróficos
 if (file_exists('conexao.php')) { 
     require_once 'conexao.php'; 
 } else { 
     die("Erro: 'conexao.php' não encontrado."); 
 }
 
-// Variáveis de controle para feedback visual das operações ao usuário
 $mensagem = ""; 
 $erro = "";
 
-// Verifica se o formulário foi submetido via método POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
-   
-    // trim() remove espaços extras no início e fim. O operador '??' define um valor padrão caso o campo venha nulo.
+    // recebe dados do form
     $nome = trim($_POST['nome'] ?? '');
     $aroma = trim($_POST['aroma'] ?? '');
     $tamanho = trim($_POST['tamanho'] ?? '');
     
-    // Converte vírgulas em pontos para garantir que o valor seja interpretado corretamente como float/numeric no banco
+    // converte vírgula em ponto pra funcionar no banco
     $preco = str_replace(',', '.', $_POST['preco'] ?? '0');
     
-    // Força a conversão do estoque para um número inteiro puro (Segurança contra dados inválidos)
+    // garante que estoque é um número inteiro
     $estoque = intval($_POST['estoque'] ?? 0);
     $nome_imagem = ""; 
 
-    
-    // Verifica se o arquivo foi enviado e se não houve nenhum erro no protocolo de transferência HTTP
     if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
-        
-        // Extrai a extensão do arquivo original e converte para letras minúsculas
         $extensao = strtolower(pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION));
         
-        // Whitelist (Lista Branca) de segurança de extensões aceitas pelo sistema
+        // só aceita esses formatos
         $extensoes_permitidas = ['jpg', 'jpeg', 'png', 'webp'];
 
         if (in_array($extensao, $extensoes_permitidas)) {
             $pasta_destino = 'imagens/';
             
-            // Cria o diretório de imagens dinamicamente com permissão de escrita, caso ele não exista na raiz
             if (!is_dir($pasta_destino)) { 
                 mkdir($pasta_destino, 0777, true); 
             }
 
-            // Gera um hash único baseado no tempo em microssegundos (Evita que imagens com o mesmo nome se sobrescrevam)
+            // nome único pra foto
             $nome_imagem = uniqid('vela_') . '.' . $extensao;
             
             // Move o arquivo temporário armazenado pelo servidor para a pasta física definitiva

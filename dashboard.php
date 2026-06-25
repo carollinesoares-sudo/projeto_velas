@@ -8,15 +8,14 @@ error_reporting(E_ALL);
 require_once 'conexao.php';
 
 try {
-    
+    // busca todas as velas
     $stmtListagem = $pdo->query("SELECT * FROM public.velas ORDER BY nome ASC");
     $velas = $stmtListagem->fetchAll(PDO::FETCH_ASSOC);
 
     $totalVelas = count($velas);
     
 } catch (PDOException $e) {
-    
-    die("Erro crítico no banco de dados: " . $e->getMessage());
+    die("Erro no banco de dados: " . $e->getMessage());
 }
 ?>
 <!DOCTYPE html>
